@@ -1,1 +1,1 @@
-rootProject.name = "com.example.osar-back"
+rootProject.name = "dev.pango.osar-back"
