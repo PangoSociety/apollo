@@ -10,6 +10,8 @@ local.properties
 # Secrets configuration file
 secrets\.properties
 
+assets/
+
 ### STS ###
 .apt_generated
 .classpath
