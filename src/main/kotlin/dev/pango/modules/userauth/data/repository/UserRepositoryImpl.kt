@@ -2,13 +2,11 @@ package dev.pango.modules.userauth.data.repository
 
 import arrow.core.Either
 import dev.pango.modules.sharedkernel.domain.failure.Failure
-import dev.pango.modules.sharedkernel.infraestructure.persistence.database
+import dev.pango.modules.sharedkernel.infraestructure.persistence.*
 
-import dev.pango.modules.userauth.domain.entity.CreateUserEntity
-import dev.pango.modules.userauth.domain.entity.DeleteUserEntity
-import dev.pango.modules.userauth.domain.entity.UpdateUserEntity
 import dev.pango.modules.userauth.domain.repository.UserRepository
 import dev.pango.modules.userauth.infraestructure.persistence.tables.*
+import kotlinx.serialization.Serializable
 import org.ktorm.dsl.eq
 import org.ktorm.entity.add
 import org.ktorm.entity.find
@@ -33,12 +31,12 @@ class UserRepositoryImpl : UserRepository {
             .find { user -> user.id eq id }
 
     override suspend fun updateUser(
-        id:Int,
-        userEntity: UpdateUserEntity,
+        id: Int,
+        firstname: String,
     ): Either<Failure, Unit> {
         return try {
             val foundUser = searchUser(id)
-            foundUser?.firstName = userEntity.firstName
+            foundUser?.firstName = firstname
             val affectedRecordsNumber = foundUser?.flushChanges()
             if (affectedRecordsNumber == 1) {
                 Either.Right(Unit)
@@ -51,9 +49,9 @@ class UserRepositoryImpl : UserRepository {
         }
     }
 
-    override suspend fun deleteUser(userEntity: DeleteUserEntity): Either<Failure, Unit> {
+    override suspend fun deleteUser(id: Int): Either<Failure, Unit> {
         return try {
-            val foundUser = searchUser(userEntity.id)
+            val foundUser = searchUser(id)
             val affectedRecordsNumber = foundUser?.delete()
             if (affectedRecordsNumber == 1) {
                 Either.Right(Unit)
@@ -65,12 +63,16 @@ class UserRepositoryImpl : UserRepository {
         }
     }
 
-    override suspend fun createUser2(userEntity: CreateUserEntity): Either<Failure, Unit> {
+    override suspend fun createUser2(
+        firstname: String,
+        lastname: String,
+        email: String,
+    ): Either<Failure, Unit> {
         try {
             val newUser = User {
-                firstName = userEntity.firstName
-                lastName = userEntity.lastName
-                email = userEntity.email
+                this.firstName = firstname
+                this.lastName = lastname
+                this.email = email
             }
             val affectedRecordsNumber =
                 database.sequenceOf(UserTable)
@@ -88,3 +90,6 @@ class UserRepositoryImpl : UserRepository {
     }
 
 }
+
+@Serializable
+data class ErrorResponse(val message: String)

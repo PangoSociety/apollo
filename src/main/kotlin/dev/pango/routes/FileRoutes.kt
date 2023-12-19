@@ -1,29 +1,24 @@
 package dev.pango.routes
 
-import JwtConfig
-import dev.pango.dao.*
+import dev.pango.dao.FileService
 import dev.pango.models.*
 import dev.pango.plugins.extractFileExtension
 import dev.pango.plugins.generateFileName
-import dev.pango.plugins.hashFileName
 import io.ktor.http.*
 import io.ktor.http.content.forEachPart
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.response.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import java.io.File
 import io.ktor.http.content.PartData.FileItem
 import io.ktor.http.content.streamProvider
-import java.security.MessageDigest
 import java.util.UUID
 
 
 fun Application.configureFileRoutes() {
     routing {
-        val fileService = dev.pango.dao.FileService()
+        val fileService = FileService()
         route("/file") {
             createFile(fileService)
         }
@@ -33,7 +28,7 @@ fun Application.configureFileRoutes() {
 }
 
 
-fun Route.getFileForDownload(fileService: dev.pango.dao.FileService) {
+fun Route.getFileForDownload(fileService: FileService) {
     get("/download/{fileId}") {
         val fileId = call.parameters["fileId"] ?: return@get call.respond(
             HttpStatusCode.BadRequest,
@@ -55,7 +50,7 @@ fun Route.getFileForDownload(fileService: dev.pango.dao.FileService) {
     }
 }
 
-fun Route.createFile(fileService: dev.pango.dao.FileService) {
+fun Route.createFile(fileService: FileService) {
     post {
         val parts = call.receiveMultipart()
         val uuid: UUID = generateFileName()
@@ -77,24 +72,24 @@ fun Route.createFile(fileService: dev.pango.dao.FileService) {
                 }
 
                 else -> {
-                    call.respond(
-                        HttpStatusCode.BadRequest,
-                        ErrorResponse("Cannot create path File")
-                    )
+//                    call.respond(
+//                        HttpStatusCode.BadRequest,
+//                        ErrorResponse("Cannot create path File")
+//                    )
                 }
             }
             part.dispose()
         }
 
 
-        fileName?.let {
-//            val hashedFileName = hashFileName(it)
-            val success = fileService.createFile(FilesRequest(id = uuid, path = it))
-            if (success)
-                call.respond(HttpStatusCode.Created)
-            else
-                call.respond(HttpStatusCode.BadRequest, ErrorResponse("Cannot create path File"))
-        }
+//        fileName?.let {
+////            val hashedFileName = hashFileName(it)
+//            val success = fileService.createFile(FilesRequest(id = uuid, path = it))
+//            if (success)
+//                call.respond(HttpStatusCode.Created)
+//            else
+//                call.respond(HttpStatusCode.BadRequest, ErrorResponse("Cannot create path File"))
+//        }
         call.respond("File uploaded successfully")
     }
 

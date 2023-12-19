@@ -3,8 +3,7 @@ package dev.pango.modules.userauth.presentation.apirest
 import dev.pango.models.*
 import dev.pango.modules.userauth.data.dto.user.AddUserDTO
 import dev.pango.modules.userauth.data.dto.user.UpdateUserDTO
-import dev.pango.modules.userauth.data.dto.user.toUserDomain
-import dev.pango.modules.userauth.domain.entity.DeleteUserEntity
+import dev.pango.modules.userauth.data.repository.ErrorResponse
 import dev.pango.modules.userauth.domain.repository.UserRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -38,7 +37,11 @@ fun Route.createUser(userRepository: UserRepository) {
         try {
             val entity = call.receive<AddUserDTO>()
 
-            val success = userRepository.createUser2(userEntity = entity.toUserDomain())
+            val success = userRepository.createUser2(
+                firstname = entity.firstName,
+                lastname = entity.lastName,
+                email = entity.email
+            )
 
             success.fold(
                 ifLeft = {
@@ -61,7 +64,7 @@ fun Route.deleteUser(userRepository: UserRepository) {
     delete("/{id}") {
         try {
             val id: Int = call.parameters["id"]?.toIntOrNull()!!
-            val success = userRepository.deleteUser(DeleteUserEntity(id))
+            val success = userRepository.deleteUser(id)
             success.fold(
                 ifLeft = {
                     call.respond(
@@ -86,7 +89,7 @@ fun Route.updateUser(userRepository: UserRepository) {
         try {
             val entity = call.receive<UpdateUserDTO>()
             val id: Int = call.parameters["id"]?.toIntOrNull()!!
-            val success = userRepository.updateUser(id = id, userEntity = entity.toUserDomain())
+            val success = userRepository.updateUser(id = id, firstname = entity.firstName)
             success.fold(
                 ifLeft = {
                     call.respond(
@@ -130,6 +133,6 @@ fun Route.searchUser(userRepository: UserRepository) {
     }
 }
 
-private fun User?.toUserResponse(): UserResponse? =
-    this?.let { UserResponse(it.id!!, it.firstName, it.lastName, it.email) }
+//private fun User?.toUserResponse(): UserResponse? =
+//    this?.let { UserResponse(it.id!!, it.firstName, it.lastName, it.email) }
 
