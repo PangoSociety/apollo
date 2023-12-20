@@ -19,4 +19,6 @@ interface UserRepository {
     ): Either<Failure, Unit>
 
     suspend fun searchUser(id: Int): User?
+
+    suspend fun findAllUsers(): Set<User>
 }

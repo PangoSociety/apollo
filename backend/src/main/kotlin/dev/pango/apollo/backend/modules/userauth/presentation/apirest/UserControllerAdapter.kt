@@ -2,7 +2,9 @@ package dev.pango.apollo.backend.modules.userauth.presentation.apirest
 
 import dev.pango.apollo.backend.modules.userauth.data.dto.user.*
 import dev.pango.apollo.backend.modules.userauth.data.repository.*
+import dev.pango.apollo.backend.modules.userauth.domain.entity.UserEntity
 import dev.pango.apollo.backend.modules.userauth.domain.repository.*
+import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.tables.User
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -13,17 +15,12 @@ import org.koin.ktor.ext.*
 fun Application.configureUserRoutes() {
     val user by inject<UserRepository>()
     routing {
-        route("/create") {
+        route("/v1/users") {
             createUser(user)
-        }
-        route("/delete") {
             deleteUser(user)
-        }
-        route("/search") {
             searchUser(user)
-        }
-        route("/update") {
             updateUser(user)
+            getAllUser(user)
         }
     }
 }
@@ -106,7 +103,8 @@ fun Route.searchUser(userRepository: UserRepository) {
         try {
             val id: Int = call.parameters["id"]?.toIntOrNull()!!
             val success = userRepository.searchUser(id = id)
-            success?.firstName
+            userRepository.searchUser(id)
+                ?.let { foundUser -> foundUser.toUserResponse() }
                 ?.let { response -> call.respond(response) }
                 ?: return@get call.respond(
                     HttpStatusCode.BadRequest,
@@ -117,3 +115,15 @@ fun Route.searchUser(userRepository: UserRepository) {
         }
     }
 }
+
+
+fun Route.getAllUser(userRepository: UserRepository) {
+    get {
+        val books = userRepository.findAllUsers()
+            .map(User::toUserResponse)
+        call.respond(message = books)
+    }
+}
+
+private fun User?.toUserResponse(): UserEntity? =
+    this?.let { UserEntity(it.id!!, it.firstName, it.lastName, it.email) }

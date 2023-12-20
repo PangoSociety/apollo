@@ -10,9 +10,13 @@ import org.ktorm.dsl.*
 import org.ktorm.entity.*
 
 class UserRepositoryImpl : UserRepository {
+
     override suspend fun searchUser(id: Int): User? =
         database.sequenceOf(UserTable)
             .find { user -> user.id eq id }
+
+    override suspend fun findAllUsers(): Set<User> =
+        database.sequenceOf(UserTable).toSet()
 
     override suspend fun updateUser(
         id: Int,
