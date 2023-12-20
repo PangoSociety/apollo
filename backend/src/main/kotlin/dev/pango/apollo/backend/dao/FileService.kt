@@ -1,20 +1,12 @@
 package dev.pango.apollo.backend.dao
 
 import dev.pango.apollo.backend.models.*
-import org.ktorm.database.*
+import dev.pango.apollo.backend.modules.sharedkernel.infraestructure.persistence.*
 import org.ktorm.dsl.*
 import org.ktorm.entity.*
 import java.util.*
 
 class FileService {
-    private val database =
-        Database.connect(
-            url = "jdbc:postgresql://localhost:5432/postgres",
-            driver = "org.postgresql.Driver",
-            user = "postgres",
-            password = "postgres",
-        )
-
     fun createFile(filesRequest: FilesRequest): Boolean {
         val newFile =
             File {

@@ -1,12 +1,11 @@
 package dev.pango.apollo.backend.plugins
 
-import dev.pango.apollo.backend.modules.userauth.di.userAuthModule
-import io.ktor.serialization.kotlinx.json.json
-import io.ktor.server.application.Application
-import io.ktor.server.application.install
-import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
-import org.koin.ktor.plugin.Koin
-import org.koin.logger.slf4jLogger
+import dev.pango.apollo.backend.modules.userauth.di.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.contentnegotiation.*
+import org.koin.ktor.plugin.*
+import org.koin.logger.*
 
 fun Application.configureSerialization() {
     install(ContentNegotiation) {
@@ -16,12 +15,4 @@ fun Application.configureSerialization() {
         slf4jLogger()
         modules(userAuthModule)
     }
-//    install(CORS) {
-//        anyHost()
-//        allowHeader(HttpHeaders.ContentType)
-//    }
-//    install(Koin) {
-//        slf4jLogger()
-//
-//    }
 }

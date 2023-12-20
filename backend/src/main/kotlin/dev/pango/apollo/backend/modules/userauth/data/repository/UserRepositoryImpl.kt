@@ -1,30 +1,15 @@
 package dev.pango.apollo.backend.modules.userauth.data.repository
 
-import arrow.core.Either
-import dev.pango.apollo.backend.modules.sharedkernel.domain.failure.Failure
-import dev.pango.apollo.backend.modules.sharedkernel.infraestructure.persistence.database
-import dev.pango.apollo.backend.modules.userauth.domain.repository.UserRepository
-import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.tables.User
-import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.tables.UserTable
-import kotlinx.serialization.Serializable
-import org.ktorm.dsl.eq
-import org.ktorm.entity.add
-import org.ktorm.entity.find
-import org.ktorm.entity.sequenceOf
+import arrow.core.*
+import dev.pango.apollo.backend.modules.sharedkernel.domain.failure.*
+import dev.pango.apollo.backend.modules.sharedkernel.infraestructure.persistence.*
+import dev.pango.apollo.backend.modules.userauth.domain.repository.*
+import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.tables.*
+import kotlinx.serialization.*
+import org.ktorm.dsl.*
+import org.ktorm.entity.*
 
 class UserRepositoryImpl : UserRepository {
-    //    override suspend fun createUser(userEntity: CreateUserEntity): Boolean {
-//        val newUser = User {
-//            firstName = userEntity.firstName
-//            lastName = userEntity.lastName
-//            email = userEntity.email
-//        }
-//        val affectedRecordsNumber =
-//            database.sequenceOf(UserTable)
-//                .add(newUser)
-//        return affectedRecordsNumber == 1
-//    }
-
     override suspend fun searchUser(id: Int): User? =
         database.sequenceOf(UserTable)
             .find { user -> user.id eq id }
@@ -61,7 +46,7 @@ class UserRepositoryImpl : UserRepository {
         }
     }
 
-    override suspend fun createUser2(
+    override suspend fun createUser(
         firstname: String,
         lastname: String,
         email: String,

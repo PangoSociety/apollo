@@ -12,7 +12,7 @@ interface UserRepository {
 
     suspend fun deleteUser(id: Int): Either<Failure, Unit>
 
-    suspend fun createUser2(
+    suspend fun createUser(
         firstname: String,
         lastname: String,
         email: String,

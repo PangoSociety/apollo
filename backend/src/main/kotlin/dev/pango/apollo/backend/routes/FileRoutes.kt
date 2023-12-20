@@ -1,18 +1,16 @@
 package dev.pango.apollo.backend.routes
 
-import dev.pango.apollo.backend.dao.FileService
-import dev.pango.apollo.backend.plugins.extractFileExtension
-import dev.pango.apollo.backend.plugins.generateFileName
+import dev.pango.apollo.backend.dao.*
+import dev.pango.apollo.backend.plugins.*
 import io.ktor.http.*
-import io.ktor.http.content.PartData.FileItem
-import io.ktor.http.content.forEachPart
-import io.ktor.http.content.streamProvider
+import io.ktor.http.content.*
+import io.ktor.http.content.PartData.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.io.File
-import java.util.UUID
+import java.io.*
+import java.util.*
 
 fun Application.configureFileRoutes() {
     routing {
@@ -80,14 +78,6 @@ fun Route.createFile(fileService: FileService) {
             part.dispose()
         }
 
-//        fileName?.let {
-// //            val hashedFileName = hashFileName(it)
-//            val success = fileService.createFile(FilesRequest(id = uuid, path = it))
-//            if (success)
-//                call.respond(HttpStatusCode.Created)
-//            else
-//                call.respond(HttpStatusCode.BadRequest, ErrorResponse("Cannot create path File"))
-//        }
         call.respond("File uploaded successfully")
     }
 }

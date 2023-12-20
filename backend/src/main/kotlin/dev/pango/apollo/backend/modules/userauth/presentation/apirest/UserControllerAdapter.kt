@@ -33,7 +33,7 @@ fun Route.createUser(userRepository: UserRepository) {
         try {
             val entity = call.receive<AddUserDTO>()
             val success =
-                userRepository.createUser2(
+                userRepository.createUser(
                     firstname = entity.firstName,
                     lastname = entity.lastName,
                     email = entity.email,
@@ -87,7 +87,7 @@ fun Route.updateUser(userRepository: UserRepository) {
                         HttpStatusCode.BadRequest,
                         call.respond(
                             HttpStatusCode.BadRequest,
-                            ErrorResponse("Cannot update book with id [$id]"),
+                            ErrorResponse("Cannot update user with id [$id]"),
                         ),
                     )
                 },
@@ -110,7 +110,7 @@ fun Route.searchUser(userRepository: UserRepository) {
                 ?.let { response -> call.respond(response) }
                 ?: return@get call.respond(
                     HttpStatusCode.BadRequest,
-                    ErrorResponse("Book with id [$id] not found"),
+                    ErrorResponse("User with id [$id] not found"),
                 )
         } catch (e: Exception) {
             call.respond(HttpStatusCode.BadRequest, ErrorResponse(e.message ?: "unexpected"))
