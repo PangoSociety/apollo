@@ -2,13 +2,12 @@ package dev.pango.apollo.backend.modules.userauth.domain.repository
 
 import arrow.core.Either
 import dev.pango.apollo.backend.modules.sharedkernel.domain.failure.Failure
-import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.tables.User
+import dev.pango.apollo.backend.modules.userauth.domain.entity.User
 
 interface UserRepository {
     suspend fun updateUser(
-        id: Int,
-        firstname: String,
-    ): Either<Failure, Unit>
+        user: User
+    ): Either<Failure, User>
 
     suspend fun deleteUser(id: Int): Either<Failure, Unit>
 
@@ -16,9 +15,9 @@ interface UserRepository {
         firstname: String,
         lastname: String,
         email: String,
-    ): Either<Failure, Unit>
+    ): Either<Failure, User>
 
-    suspend fun searchUser(id: Int): User?
+    suspend fun findById(id: Int): Either<Failure, User>
 
-    suspend fun findAllUsers(): Set<User>
+    suspend fun findAll(): Either<Failure, List<User>>
 }
