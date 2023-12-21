@@ -2,7 +2,10 @@ package dev.pango.apollo.backend.modules.userauth.presentation.apirest
 
 import dev.pango.apollo.backend.modules.userauth.data.dto.user.*
 import dev.pango.apollo.backend.modules.userauth.data.repository.*
+import dev.pango.apollo.backend.modules.userauth.domain.entity.User
 import dev.pango.apollo.backend.modules.userauth.domain.repository.*
+import dev.pango.apollo.backend.modules.userauth.mapper.toDetailUserDTO
+import dev.pango.apollo.backend.modules.userauth.presentation.apivariable.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -11,19 +14,14 @@ import io.ktor.server.routing.*
 import org.koin.ktor.ext.*
 
 fun Application.configureUserRoutes() {
-    val user by inject<UserRepository>()
+    val userRepository by inject<UserRepository>()
     routing {
-        route("/create") {
-            createUser(user)
-        }
-        route("/delete") {
-            deleteUser(user)
-        }
-        route("/search") {
-            searchUser(user)
-        }
-        route("/update") {
-            updateUser(user)
+        route("${ApiRestVersioning.V1}/${ApiRestResources.USERS}") {
+            createUser(userRepository)
+            deleteUser(userRepository)
+            findUser(userRepository)
+            updateUser(userRepository)
+            getUserList(userRepository)
         }
     }
 }
@@ -80,7 +78,15 @@ fun Route.updateUser(userRepository: UserRepository) {
         try {
             val entity = call.receive<UpdateUserDTO>()
             val id: Int = call.parameters["id"]?.toIntOrNull()!!
-            val success = userRepository.updateUser(id = id, firstname = entity.firstName)
+            val success =
+                userRepository.updateUser(
+                    User(
+                        id = id,
+                        firstName = entity.firstName,
+                        lastName = entity.lastName,
+                        email = entity.email,
+                    ),
+                )
             success.fold(
                 ifLeft = {
                     call.respond(
@@ -92,7 +98,7 @@ fun Route.updateUser(userRepository: UserRepository) {
                     )
                 },
                 ifRight = {
-                    call.respond(HttpStatusCode.NoContent, message = "User with id [$id] updated!!")
+                    call.respond(it.toDetailUserDTO())
                 },
             )
         } catch (e: Exception) {
@@ -101,19 +107,50 @@ fun Route.updateUser(userRepository: UserRepository) {
     }
 }
 
-fun Route.searchUser(userRepository: UserRepository) {
+fun Route.findUser(userRepository: UserRepository) {
     get("/{id}") {
         try {
             val id: Int = call.parameters["id"]?.toIntOrNull()!!
-            val success = userRepository.searchUser(id = id)
-            success?.firstName
-                ?.let { response -> call.respond(response) }
-                ?: return@get call.respond(
-                    HttpStatusCode.BadRequest,
-                    ErrorResponse("User with id [$id] not found"),
-                )
+            val user = userRepository.findById(id)
+            user.fold(
+                ifLeft = {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        call.respond(
+                            HttpStatusCode.BadRequest,
+                            ErrorResponse("Cannot find user with id [$id]"),
+                        ),
+                    )
+                },
+                ifRight = {
+                    call.respond(it.toDetailUserDTO())
+                },
+            )
         } catch (e: Exception) {
             call.respond(HttpStatusCode.BadRequest, ErrorResponse(e.message ?: "unexpected"))
         }
+    }
+}
+
+fun Route.getUserList(userRepository: UserRepository) {
+    get {
+        val users =
+            userRepository.findAll()
+
+        users.fold(
+            ifLeft = {
+                call.respond(
+                    HttpStatusCode.BadRequest,
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ErrorResponse("Cannot find users"),
+                    ),
+                )
+            },
+            ifRight = {
+                call.respond(it.map { user -> user.toDetailUserDTO() })
+            },
+        )
+        call.respond(message = users)
     }
 }

@@ -5,18 +5,18 @@ import org.ktorm.schema.Table
 import org.ktorm.schema.int
 import org.ktorm.schema.varchar
 
-interface User : Entity<User> {
-    companion object : Entity.Factory<User>()
+interface UserKtorm : Entity<UserKtorm> {
+    companion object : Entity.Factory<UserKtorm>()
 
-    val id: Int?
+    val id: Int
     var firstName: String
     var lastName: String
     var email: String
 }
 
-object UserTable : Table<User>("users") {
-    val id = int("id").primaryKey().bindTo(User::id)
-    val firstName = varchar("firstname").bindTo(User::firstName)
-    val lastName = varchar("lastname").bindTo(User::lastName)
-    val email = varchar("email").bindTo(User::email)
+object UserTable : Table<UserKtorm>("users") {
+    val id = int("id").primaryKey().bindTo(UserKtorm::id)
+    val firstName = varchar("firstname").bindTo(UserKtorm::firstName)
+    val lastName = varchar("lastname").bindTo(UserKtorm::lastName)
+    val email = varchar("email").bindTo(UserKtorm::email)
 }
