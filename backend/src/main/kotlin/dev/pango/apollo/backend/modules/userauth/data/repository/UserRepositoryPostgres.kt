@@ -12,7 +12,6 @@ import org.ktorm.dsl.*
 import org.ktorm.entity.*
 
 class UserRepositoryPostgres : UserRepository {
-
     override suspend fun findById(id: Int): Either<Failure, User> {
         return try {
             val data = getUserFromDb(id)
@@ -27,19 +26,17 @@ class UserRepositoryPostgres : UserRepository {
     }
 
     override suspend fun findAll(): Either<Failure, List<User>> {
-       return try {
-           val data =
-               database.sequenceOf(UserTable).toList()
-           if(data.isNotEmpty()) {
-               Either.Right(data.map { it.toUserDomain() } )
-           }else {
-               Either.Left(Failure.DatabaseError)
-           }
-       } catch (e: Exception){
-           Either.Left(Failure.Generic(e))
-
-       }
-
+        return try {
+            val data =
+                database.sequenceOf(UserTable).toList()
+            if (data.isNotEmpty()) {
+                Either.Right(data.map { it.toUserDomain() })
+            } else {
+                Either.Left(Failure.DatabaseError)
+            }
+        } catch (e: Exception) {
+            Either.Left(Failure.Generic(e))
+        }
     }
 
     override suspend fun updateUser(
@@ -110,8 +107,9 @@ class UserRepositoryPostgres : UserRepository {
     }
 
     private fun getUserFromDb(id: Int): UserKtorm? {
-        val data = database.sequenceOf(UserTable)
-            .find { user -> user.id eq id }
+        val data =
+            database.sequenceOf(UserTable)
+                .find { user -> user.id eq id }
         return data
     }
 }

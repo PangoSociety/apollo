@@ -1,14 +1,10 @@
 package dev.pango.apollo.backend.modules.userauth.presentation.apirest
 
-import arrow.core.Either
-import dev.pango.apollo.backend.modules.sharedkernel.domain.failure.Failure
 import dev.pango.apollo.backend.modules.userauth.data.dto.user.*
 import dev.pango.apollo.backend.modules.userauth.data.repository.*
 import dev.pango.apollo.backend.modules.userauth.domain.entity.User
 import dev.pango.apollo.backend.modules.userauth.domain.repository.*
-import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.tables.UserKtorm
 import dev.pango.apollo.backend.modules.userauth.mapper.toDetailUserDTO
-import dev.pango.apollo.backend.modules.userauth.mapper.toUserDomain
 import dev.pango.apollo.backend.modules.userauth.presentation.apivariable.*
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -82,14 +78,15 @@ fun Route.updateUser(userRepository: UserRepository) {
         try {
             val entity = call.receive<UpdateUserDTO>()
             val id: Int = call.parameters["id"]?.toIntOrNull()!!
-            val success = userRepository.updateUser(
-                User(
-                    id = id,
-                    firstName = entity.firstName,
-                    lastName = entity.lastName,
-                    email = entity.email
+            val success =
+                userRepository.updateUser(
+                    User(
+                        id = id,
+                        firstName = entity.firstName,
+                        lastName = entity.lastName,
+                        email = entity.email,
+                    ),
                 )
-            )
             success.fold(
                 ifLeft = {
                     call.respond(
@@ -115,20 +112,20 @@ fun Route.findUser(userRepository: UserRepository) {
         try {
             val id: Int = call.parameters["id"]?.toIntOrNull()!!
             val user = userRepository.findById(id)
-                user.fold(
-                    ifLeft = {
+            user.fold(
+                ifLeft = {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
                         call.respond(
                             HttpStatusCode.BadRequest,
-                            call.respond(
-                                HttpStatusCode.BadRequest,
-                                ErrorResponse("Cannot find user with id [$id]"),
-                            ),
-                        )
-                    },
-                    ifRight = {
-                        call.respond(it.toDetailUserDTO())
-                    },
-                )
+                            ErrorResponse("Cannot find user with id [$id]"),
+                        ),
+                    )
+                },
+                ifRight = {
+                    call.respond(it.toDetailUserDTO())
+                },
+            )
         } catch (e: Exception) {
             call.respond(HttpStatusCode.BadRequest, ErrorResponse(e.message ?: "unexpected"))
         }

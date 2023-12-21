@@ -6,7 +6,7 @@ import dev.pango.apollo.backend.modules.userauth.domain.entity.User
 
 interface UserRepository {
     suspend fun updateUser(
-        user: User
+        user: User,
     ): Either<Failure, User>
 
     suspend fun deleteUser(id: Int): Either<Failure, Unit>
