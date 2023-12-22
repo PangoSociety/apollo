@@ -1,13 +1,20 @@
 package dev.pango.apollo.backend.modules.userauth.presentation.apirest
 
+import dev.pango.apollo.backend.modules.userauth.aplication.service.AuthService
 import dev.pango.apollo.backend.modules.userauth.data.dto.user.*
 import dev.pango.apollo.backend.modules.userauth.data.repository.*
+import dev.pango.apollo.backend.modules.userauth.data.dto.user.RefreshTokenDTO
+import dev.pango.apollo.backend.modules.userauth.domain.entity.RefreshTokenResponse
 import dev.pango.apollo.backend.modules.userauth.domain.entity.User
 import dev.pango.apollo.backend.modules.userauth.domain.repository.*
 import dev.pango.apollo.backend.modules.userauth.mapper.toDetailUserDTO
+import dev.pango.apollo.backend.modules.userauth.mapper.toRefreshDTO
 import dev.pango.apollo.backend.modules.userauth.presentation.apivariable.*
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -15,6 +22,7 @@ import org.koin.ktor.ext.*
 
 fun Application.configureUserRoutes() {
     val userRepository by inject<UserRepository>()
+    val authService by inject<AuthService>()
     routing {
         route("${ApiRestVersioning.V1}/${ApiRestResources.USERS}") {
             createUser(userRepository)
@@ -22,6 +30,22 @@ fun Application.configureUserRoutes() {
             findUser(userRepository)
             updateUser(userRepository)
             getUserList(userRepository)
+        }
+        route("/login") {
+            login(userRepository, authService)
+        }
+        authenticate("auth-jwt") {
+            get("/hello") {
+                val principal = call.principal<JWTPrincipal>()
+                val firstname = principal!!.payload.getClaim("firstName").asString()
+                val expiresAt = principal.expiresAt?.time.let {
+                    val currentTimeMillis = System.currentTimeMillis()
+                    val differenceInMillis = it?.minus(currentTimeMillis)
+                    val differenceInDays = differenceInMillis?.div((24 * 60 * 60 * 1000))
+                    differenceInDays
+                }
+                call.respondText("Hello, $firstname! El token expira en $expiresAt days.")
+            }
         }
     }
 }
@@ -154,3 +178,54 @@ fun Route.getUserList(userRepository: UserRepository) {
         call.respond(message = users)
     }
 }
+
+fun Route.login(userRepository: UserRepository, authService: AuthService) {
+    post {
+        try {
+            val credentials = call.receive<LoginUserDTO>()
+//            val authResponse = authService.authenticate()
+            val auth = userRepository.authUser(
+                firstName = credentials.firstName,
+                lastname = credentials.lastName
+            )
+            auth.fold(
+                ifLeft = {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        call.respond(
+                            HttpStatusCode.BadRequest,
+                            ErrorResponse("Cannot login"),
+                        ),
+                    )
+                },
+                ifRight = {
+                    it.let {
+                        val respondData = JwtAuthDTO(it.accessToken, it.refreshToken)
+                        call.respond(hashMapOf("response" to respondData))
+                    }
+//                    call.respond(hashMapOf("token" to auth))
+                },
+            )
+        } catch (e: Exception) {
+            call.respond(HttpStatusCode.BadRequest, ErrorResponse(e.message ?: "unexpected"))
+        }
+    }
+
+    post("/refresh") {
+        val request = call.receive<RefreshTokenDTO>()
+        val newAccessToken = userRepository.refreshToken(token = request.token)
+
+        newAccessToken.fold(
+            ifLeft = {
+                call.respond(HttpStatusCode.BadRequest, ErrorResponse(it.errorMessage))
+            },
+            ifRight = {
+                call.respond(
+                    it.toRefreshDTO()
+                )
+            }
+        )
+    }
+}
+
+

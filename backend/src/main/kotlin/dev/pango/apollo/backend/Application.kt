@@ -1,7 +1,7 @@
 package dev.pango.apollo.backend
 
+import dev.pango.apollo.backend.modules.userauth.mapper.configureAuth
 import dev.pango.apollo.backend.modules.userauth.presentation.apirest.configureUserRoutes
-import dev.pango.apollo.backend.plugins.configureAuth
 import dev.pango.apollo.backend.plugins.configureSerialization
 import dev.pango.apollo.backend.routes.configureFileRoutes
 import io.ktor.server.application.Application

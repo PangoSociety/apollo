@@ -1,8 +1,13 @@
 package dev.pango.apollo.backend.modules.userauth.data.repository
 
 import arrow.core.*
+import com.auth0.jwt.interfaces.DecodedJWT
 import dev.pango.apollo.backend.modules.sharedkernel.domain.failure.*
 import dev.pango.apollo.backend.modules.sharedkernel.infraestructure.persistence.*
+import dev.pango.apollo.backend.modules.userauth.aplication.config.JwtConfig
+import dev.pango.apollo.backend.modules.userauth.aplication.service.AuthService
+import dev.pango.apollo.backend.modules.userauth.domain.entity.AuthResponse
+import dev.pango.apollo.backend.modules.userauth.domain.entity.RefreshTokenResponse
 import dev.pango.apollo.backend.modules.userauth.domain.entity.User
 import dev.pango.apollo.backend.modules.userauth.domain.repository.*
 import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.tables.*
@@ -11,7 +16,11 @@ import kotlinx.serialization.*
 import org.ktorm.dsl.*
 import org.ktorm.entity.*
 
-class UserRepositoryPostgres : UserRepository {
+class UserRepositoryPostgres(
+    private val authService: AuthService,
+    private val refreshTokenRepository: RefreshTokenRepository,
+) : UserRepository {
+
     override suspend fun findById(id: Int): Either<Failure, User> {
         return try {
             val data = getUserFromDb(id)
@@ -31,6 +40,23 @@ class UserRepositoryPostgres : UserRepository {
                 database.sequenceOf(UserTable).toList()
             if (data.isNotEmpty()) {
                 Either.Right(data.map { it.toUserDomain() })
+            } else {
+                Either.Left(Failure.DatabaseError)
+            }
+        } catch (e: Exception) {
+            Either.Left(Failure.Generic(e))
+        }
+    }
+
+    override suspend fun getUserByCredentials(
+        firstName: String,
+        lastname: String,
+    ): Either<Failure, User> {
+        return try {
+            val data = database.sequenceOf(UserTable)
+                .find { user -> user.firstName eq firstName and (user.lastName eq lastname) }
+            if (data is UserKtorm) {
+                Either.Right(data.toUserDomain())
             } else {
                 Either.Left(Failure.DatabaseError)
             }
@@ -106,12 +132,83 @@ class UserRepositoryPostgres : UserRepository {
         }
     }
 
-    private fun getUserFromDb(id: Int): UserKtorm? {
-        val data =
-            database.sequenceOf(UserTable)
-                .find { user -> user.id eq id }
-        return data
+    override suspend fun authUser(
+        firstName: String,
+        lastname: String,
+    ): Either<Failure, AuthResponse> {
+        return try {
+            val foundUser = database.sequenceOf(UserTable)
+                .find { user -> user.firstName eq firstName and (user.lastName eq lastname) }
+            if (foundUser is UserKtorm) {
+                val accessToken = authService.createAccessToken(firstName)
+                val refreshToken = authService.createRefreshToken(firstName)
+                refreshTokenRepository.save(refreshToken, firstName)
+                Either.Right(
+                    AuthResponse(
+                        accessToken, refreshToken
+                    )
+                )
+            } else {
+                Either.Left(Failure.DatabaseError)
+            }
+        } catch (e: Exception) {
+            Either.Left(Failure.Generic(e))
+        }
     }
+
+    override suspend fun refreshToken(token: String): Either<Failure, RefreshTokenResponse> {
+        return try {
+            val decodedRefreshToken = verifyRefreshToken(token)
+            val persistedUsername = refreshTokenRepository.findUsernameByToken(token)
+            if (decodedRefreshToken != null && persistedUsername != null) {
+                val foundUser: UserKtorm? = findByFirstName(persistedUsername)
+                val usernameFromRefreshToken: String? =
+                    decodedRefreshToken.getClaim("firstName").asString()
+
+                if (foundUser != null && usernameFromRefreshToken == foundUser.firstName)
+                    Either.Right(
+                        RefreshTokenResponse(
+                            authService.createAccessToken(
+                                persistedUsername
+                            )
+                        )
+                    )
+                else {
+                    Either.Left(Failure.Generic(Throwable("11")))
+                }
+            } else {
+
+                Either.Left(Failure.Generic(Throwable("1122")))
+            }
+        } catch (e: Exception) {
+            Either.Left(Failure.Generic(e))
+        }
+    }
+
+    private fun findByFirstName(firstName: String): UserKtorm? {
+        return database.sequenceOf(UserTable)
+            .find { user -> user.firstName eq firstName }
+    }
+
+    private fun getUserFromDb(id: Int): UserKtorm? {
+        return database.sequenceOf(UserTable)
+            .find { user -> user.id eq id }
+    }
+
+    private fun verifyRefreshToken(token: String): DecodedJWT? {
+        val decodedJwt: DecodedJWT? = getDecodedJwt(token)
+
+        return decodedJwt?.let {
+            decodedJwt
+        }
+    }
+
+    private fun getDecodedJwt(token: String): DecodedJWT? =
+        try {
+            JwtConfig.verifier.verify(token)
+        } catch (ex: Exception) {
+            null
+        }
 }
 
 @Serializable
