@@ -18,6 +18,7 @@ interface UserRepository {
         firstname: String,
         lastname: String,
         email: String,
+        password: String
     ): Either<Failure, User>
 
     suspend fun findById(id: Int): Either<Failure, User>
@@ -28,7 +29,7 @@ interface UserRepository {
 
     suspend fun authUser(
         firstName: String,
-        lastname: String,
+        password: String,
     ): Either<Failure, AuthResponse>
 
     suspend fun refreshToken(token:String) : Either<Failure, RefreshTokenResponse>

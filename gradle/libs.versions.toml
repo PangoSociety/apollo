@@ -1,13 +1,14 @@
 [versions]
-arrow="1.2.0"
-logback="1.4.11"
-koin="3.5.1"
-kotlin="1.9.21"
+arrow = "1.2.0"
+logback = "1.4.11"
+koin = "3.5.1"
+kotlin = "1.9.21"
 #ktlint = "11.4.2"
 ktlint = "12.0.3"
-ktor="2.3.7"
-ktorm="3.6.0"
-postgresql="42.3.8"
+ktor = "2.3.7"
+ktorm = "3.6.0"
+postgresql = "42.3.8"
+jbcryptversion = "0.4"
 
 [libraries]
 arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrow" }
@@ -28,6 +29,7 @@ ktor-tests = { group = "io.ktor", name = "ktor-server-tests-jvm", version.ref = 
 ktorm-core = { group = "org.ktorm", name = "ktorm-core", version.ref = "ktorm" }
 ktorm-support-postgresql = { group = "org.ktorm", name = "ktorm-support-postgresql", version.ref = "ktorm" }
 postgresql-driver = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+jbcrypt = { group = 'org.mindrot', name = 'jbcrypt', version.ref = "jbcryptversion" }
 
 [plugins]
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }

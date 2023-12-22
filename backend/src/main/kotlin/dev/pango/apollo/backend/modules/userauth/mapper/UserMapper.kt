@@ -10,6 +10,7 @@ fun UserKtorm.toUserDomain() =
         firstName = firstName,
         email = email,
         lastName = lastName,
+        password = password,
         id = id,
     )
 
@@ -26,4 +27,5 @@ fun User.toUpdateUserDTO() =
         firstName = firstName,
         email = email,
         lastName = lastName,
+        password = password
     )

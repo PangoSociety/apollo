@@ -59,6 +59,7 @@ fun Route.createUser(userRepository: UserRepository) {
                     firstname = entity.firstName,
                     lastname = entity.lastName,
                     email = entity.email,
+                    password = entity.password
                 )
 
             success.fold(
@@ -109,6 +110,7 @@ fun Route.updateUser(userRepository: UserRepository) {
                         firstName = entity.firstName,
                         lastName = entity.lastName,
                         email = entity.email,
+                        password = entity.password
                     ),
                 )
             success.fold(
@@ -186,7 +188,7 @@ fun Route.login(userRepository: UserRepository, authService: AuthService) {
 //            val authResponse = authService.authenticate()
             val auth = userRepository.authUser(
                 firstName = credentials.firstName,
-                lastname = credentials.lastName
+                password = credentials.password
             )
             auth.fold(
                 ifLeft = {

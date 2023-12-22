@@ -48,4 +48,5 @@ dependencies {
 
     // Logging
     implementation(libs.logback.classic)
+    implementation(libs.jbcrypt)
 }

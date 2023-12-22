@@ -15,6 +15,7 @@ import dev.pango.apollo.backend.modules.userauth.mapper.toUserDomain
 import kotlinx.serialization.*
 import org.ktorm.dsl.*
 import org.ktorm.entity.*
+import org.mindrot.jbcrypt.BCrypt
 
 class UserRepositoryPostgres(
     private val authService: AuthService,
@@ -110,6 +111,7 @@ class UserRepositoryPostgres(
         firstname: String,
         lastname: String,
         email: String,
+        password: String
     ): Either<Failure, User> {
         try {
             val newUser =
@@ -117,6 +119,7 @@ class UserRepositoryPostgres(
                     this.firstName = firstname
                     this.lastName = lastname
                     this.email = email
+                    this.password =hashPassword(password)
                 }
             val affectedRecordsNumber =
                 database.sequenceOf(UserTable)
@@ -134,20 +137,25 @@ class UserRepositoryPostgres(
 
     override suspend fun authUser(
         firstName: String,
-        lastname: String,
+        password: String,
     ): Either<Failure, AuthResponse> {
         return try {
             val foundUser = database.sequenceOf(UserTable)
-                .find { user -> user.firstName eq firstName and (user.lastName eq lastname) }
+                .find { user -> user.firstName eq firstName }
             if (foundUser is UserKtorm) {
-                val accessToken = authService.createAccessToken(firstName)
-                val refreshToken = authService.createRefreshToken(firstName)
-                refreshTokenRepository.save(refreshToken, firstName)
-                Either.Right(
-                    AuthResponse(
-                        accessToken, refreshToken
+                if( checkPassword(password, foundUser.password)) {
+                    val accessToken = authService.createAccessToken(firstName)
+                    val refreshToken = authService.createRefreshToken(firstName)
+                    refreshTokenRepository.save(refreshToken, firstName)
+                    Either.Right(
+                        AuthResponse(
+                            accessToken, refreshToken
+                        )
                     )
-                )
+                } else {
+                    Either.Left(Failure.DatabaseError)
+                }
+
             } else {
                 Either.Left(Failure.DatabaseError)
             }
@@ -209,6 +217,13 @@ class UserRepositoryPostgres(
         } catch (ex: Exception) {
             null
         }
+
+    private fun hashPassword(password:String) =
+        BCrypt.hashpw(password, BCrypt.gensalt())
+
+    private fun checkPassword(plainPassword: String, hashedPassword: String): Boolean {
+        return BCrypt.checkpw(plainPassword, hashedPassword)
+    }
 }
 
 @Serializable
