@@ -11,17 +11,19 @@ import kotlinx.serialization.*
 import org.ktorm.dsl.*
 import org.ktorm.entity.*
 
-class UserRepositoryPostgres : UserRepository {
+class UserRepositoryExposed : UserRepository {
     override suspend fun findById(id: Int): Either<Failure, User> {
         return try {
             val data = getUserFromDb(id)
             if (data is UserKtorm) {
                 Either.Right(data.toUserDomain())
             } else {
-                Either.Left(Failure.DatabaseError)
+//                Either.Left(Failure.DatabaseError)
+                TODO()
             }
         } catch (e: Exception) {
-            Either.Left(Failure.Generic(e))
+//            Either.Left(Failure.Generic(e))
+            TODO()
         }
     }
 
@@ -32,10 +34,12 @@ class UserRepositoryPostgres : UserRepository {
             if (data.isNotEmpty()) {
                 Either.Right(data.map { it.toUserDomain() })
             } else {
-                Either.Left(Failure.DatabaseError)
+//                Either.Left(Failure.DatabaseError)
+                TODO()
             }
         } catch (e: Exception) {
-            Either.Left(Failure.Generic(e))
+//            Either.Left(Failure.Generic(e))
+            TODO()
         }
     }
 
@@ -52,13 +56,16 @@ class UserRepositoryPostgres : UserRepository {
                 if (affectedRecordsNumber == 1) {
                     Either.Right(foundUser.toUserDomain())
                 } else {
-                    Either.Left(Failure.DatabaseError)
+//                    Either.Left(Failure.DatabaseError)
+                    TODO()
                 }
             } else {
-                Either.Left(Failure.DatabaseError)
+//                Either.Left(Failure.DatabaseError)
+                TODO()
             }
         } catch (e: Exception) {
-            Either.Left(Failure.Generic(e))
+//            Either.Left(Failure.Generic(e))
+            TODO()
         }
     }
 
@@ -70,13 +77,17 @@ class UserRepositoryPostgres : UserRepository {
                 if (affectedRecordsNumber == 1) {
                     Either.Right(Unit)
                 } else {
-                    Either.Left(Failure.DatabaseError)
+//                    Either.Left(Failure.DatabaseError)
+                    TODO()
                 }
             } else {
-                Either.Left(Failure.DatabaseError)
+//                Either.Left(Failure.DatabaseError)
+                TODO()
             }
         } catch (e: Exception) {
-            Either.Left(Failure.Generic(e))
+//            Either.Left(Failure.Generic(e))
+
+            TODO()
         }
     }
 
@@ -99,10 +110,12 @@ class UserRepositoryPostgres : UserRepository {
             return if (affectedRecordsNumber == 1) {
                 Either.Right(newUser.toUserDomain())
             } else {
-                Either.Left(Failure.DatabaseError)
+//                Either.Left(Failure.DatabaseError)
+                TODO()
             }
         } catch (e: Exception) {
-            return Either.Left(Failure.Generic(e))
+//            return Either.Left(Failure.Generic(e))
+            TODO()
         }
     }
 

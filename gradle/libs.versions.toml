@@ -1,13 +1,14 @@
 [versions]
-arrow="1.2.0"
-logback="1.4.11"
-koin="3.5.1"
-kotlin="1.9.21"
-#ktlint = "11.4.2"
+arrow = "1.2.0"
+logback = "1.4.11"
+koin = "3.5.1"
+kotlin = "1.9.21"
 ktlint = "12.0.3"
-ktor="2.3.7"
-ktorm="3.6.0"
-postgresql="42.3.8"
+ktor = "2.3.7"
+ktorm = "3.6.0"
+postgresql = "42.3.8"
+faker = "1.15.0"
+i18n4k = "0.7.0"
 
 [libraries]
 arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrow" }
@@ -28,9 +29,15 @@ ktor-tests = { group = "io.ktor", name = "ktor-server-tests-jvm", version.ref = 
 ktorm-core = { group = "org.ktorm", name = "ktorm-core", version.ref = "ktorm" }
 ktorm-support-postgresql = { group = "org.ktorm", name = "ktorm-support-postgresql", version.ref = "ktorm" }
 postgresql-driver = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+kotlin-faker = { group = "io.github.serpro69", name = "kotlin-faker", version.ref = "faker" }
+i18n4k-jvm = { group = "de.comahe.i18n4k", name = "i18n4k-core-jvm", version.ref = "i18n4k" }
+
+
 
 [plugins]
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+i18n4k = { id = "de.comahe.i18n4k", version.ref = "i18n4k" }
+
