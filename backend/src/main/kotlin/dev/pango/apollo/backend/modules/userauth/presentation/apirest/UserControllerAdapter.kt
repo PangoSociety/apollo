@@ -39,7 +39,8 @@ fun Route.createUser(userRepository: UserRepository) {
 
             success.fold(
                 ifLeft = {
-                    call.respond(HttpStatusCode.BadRequest, ErrorResponse(it.errorMessage))
+//                    call.respond(HttpStatusCode.BadRequest, ErrorResponse(it.errorMessage))
+                    call.respond(HttpStatusCode.BadRequest, ErrorResponse("error message"))
                 },
                 ifRight = {
                     call.respond(HttpStatusCode.Created)

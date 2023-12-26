@@ -8,13 +8,14 @@ class GlobalKtlintConventionPlugin : Plugin<Project> {
         with(target) {
             // TODO: Call plugin alias from libs.versions.toml
             pluginManager.apply("org.jlleitschuh.gradle.ktlint")
+
             configure<KtlintExtension> {
+                enableExperimentalRules.set(true)
                 verbose.set(true)
                 outputToConsole.set(true)
                 filter {
-                    exclude("**/generated/**")
+                    exclude { element -> element.file.path.contains("build/") }
                     include("**/kotlin/**")
-                    exclude("**/build/**")
                 }
             }
         }
