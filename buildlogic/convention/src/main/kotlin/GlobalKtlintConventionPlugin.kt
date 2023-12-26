@@ -10,11 +10,12 @@ class GlobalKtlintConventionPlugin : Plugin<Project> {
             pluginManager.apply("org.jlleitschuh.gradle.ktlint")
 
             configure<KtlintExtension> {
+                enableExperimentalRules.set(true)
                 verbose.set(true)
                 outputToConsole.set(true)
                 filter {
-                    include("**/kotlin/**")
                     exclude { element -> element.file.path.contains("build/") }
+                    include("**/kotlin/**")
                 }
             }
         }

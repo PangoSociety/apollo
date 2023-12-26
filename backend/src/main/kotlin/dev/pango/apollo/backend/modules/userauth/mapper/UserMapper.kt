@@ -4,7 +4,7 @@ import dev.pango.apollo.backend.modules.userauth.data.dto.user.DetailUserDTO
 import dev.pango.apollo.backend.modules.userauth.data.dto.user.UpdateUserDTO
 import dev.pango.apollo.backend.modules.userauth.domain.entity.User
 
-//fun UserKtorm.toUserDomain() =
+// fun UserKtorm.toUserDomain() =
 //    User(
 //        firstName = firstName,
 //        email = email,

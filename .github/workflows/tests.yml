@@ -24,7 +24,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Lint
-        run: ./gradlew ktlintCheck
+        run: ./gradlew ktlintCheck --rerun-tasks --stacktrace
 
       - name: Gradle Test
         run: ./gradlew test --rerun-tasks --stacktrace

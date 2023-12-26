@@ -16,11 +16,11 @@ class UserRepositoryExposed : UserRepository {
 //            if (data is UserKtorm) {
 //                Either.Right(data.toUserDomain())
 //            } else {
-////                Either.Left(Failure.DatabaseError)
+// //                Either.Left(Failure.DatabaseError)
 //                TODO()
 //            }
 //        } catch (e: Exception) {
-////            Either.Left(Failure.Generic(e))
+// //            Either.Left(Failure.Generic(e))
 //            TODO()
 //        }
     }
@@ -33,11 +33,11 @@ class UserRepositoryExposed : UserRepository {
 //            if (data.isNotEmpty()) {
 //                Either.Right(data.map { it.toUserDomain() })
 //            } else {
-////                Either.Left(Failure.DatabaseError)
+// //                Either.Left(Failure.DatabaseError)
 //                TODO()
 //            }
 //        } catch (e: Exception) {
-////            Either.Left(Failure.Generic(e))
+// //            Either.Left(Failure.Generic(e))
 //            TODO()
 //        }
     }
@@ -56,15 +56,15 @@ class UserRepositoryExposed : UserRepository {
 //                if (affectedRecordsNumber == 1) {
 //                    Either.Right(foundUser.toUserDomain())
 //                } else {
-////                    Either.Left(Failure.DatabaseError)
+// //                    Either.Left(Failure.DatabaseError)
 //                    TODO()
 //                }
 //            } else {
-////                Either.Left(Failure.DatabaseError)
+// //                Either.Left(Failure.DatabaseError)
 //                TODO()
 //            }
 //        } catch (e: Exception) {
-////            Either.Left(Failure.Generic(e))
+// //            Either.Left(Failure.Generic(e))
 //            TODO()
 //        }
     }
@@ -78,15 +78,15 @@ class UserRepositoryExposed : UserRepository {
 //                if (affectedRecordsNumber == 1) {
 //                    Either.Right(Unit)
 //                } else {
-////                    Either.Left(Failure.DatabaseError)
+// //                    Either.Left(Failure.DatabaseError)
 //                    TODO()
 //                }
 //            } else {
-////                Either.Left(Failure.DatabaseError)
+// //                Either.Left(Failure.DatabaseError)
 //                TODO()
 //            }
 //        } catch (e: Exception) {
-////            Either.Left(Failure.Generic(e))
+// //            Either.Left(Failure.Generic(e))
 //
 //            TODO()
 //        }
@@ -112,11 +112,11 @@ class UserRepositoryExposed : UserRepository {
 //            return if (affectedRecordsNumber == 1) {
 //                Either.Right(newUser.toUserDomain())
 //            } else {
-////                Either.Left(Failure.DatabaseError)
+// //                Either.Left(Failure.DatabaseError)
 //                TODO()
 //            }
 //        } catch (e: Exception) {
-////            return Either.Left(Failure.Generic(e))
+// //            return Either.Left(Failure.Generic(e))
 //            TODO()
 //        }
     }
