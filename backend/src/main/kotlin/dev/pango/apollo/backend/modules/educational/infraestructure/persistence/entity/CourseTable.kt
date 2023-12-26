@@ -11,11 +11,6 @@ object CourseTable : IdTable<UUID>() {
     override val primaryKey: PrimaryKey = PrimaryKey(id)
 }
 
-// class CourseTableEntity(id: EntityID<UUID>) : UUIDEntity(id) {
-//    companion object : UUIDEntityClass<CourseTableEntity>(CourseTable)
-//
-//    var name by CourseTable.name
-// }
 class CourseTableEntity(id: EntityID<UUID>) : UUIDEntity(id) {
     companion object : UUIDEntityClass<CourseTableEntity>(CourseTable)
 

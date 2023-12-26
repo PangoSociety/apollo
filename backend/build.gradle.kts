@@ -15,7 +15,6 @@ i18n4k {
 }
 
 application {
-//    mainClass.set("dev.pango.apollo.backend.ApplicationKt")
     mainClass.set("io.ktor.server.netty.EngineMain")
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
