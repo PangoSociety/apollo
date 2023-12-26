@@ -6,17 +6,16 @@ import junit.framework.TestCase.assertEquals
 import kotlin.test.Test
 
 class ApplicationTest {
-    @Test
-    fun testRoot() =
-        testApplication {
-//            application {
-//                configureRouting()
-//            }
-            // TODO: Remove this once we have a better way to test
-            assertEquals(HttpStatusCode.OK, HttpStatusCode.OK)
-//        client.get("/").apply {
-//            assertEquals(HttpStatusCode.OK, status)
-//            assertEquals("Hello World!", bodyAsText())
+//    @Test
+//    fun testRoot() =
+//        testApplication {
+////            application {
+////                configureRouting()
+////            }
+//            assertEquals(HttpStatusCode.OK, HttpStatusCode.OK)
+////        client.get("/").apply {
+////            assertEquals(HttpStatusCode.OK, status)
+////            assertEquals("Hello World!", bodyAsText())
+////        }
 //        }
-        }
 }
