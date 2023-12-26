@@ -1,6 +1,5 @@
 package dev.pango.apollo.backend
 
-import dev.pango.apollo.backend.plugins.configureRouting
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.testApplication
 import junit.framework.TestCase.assertEquals
