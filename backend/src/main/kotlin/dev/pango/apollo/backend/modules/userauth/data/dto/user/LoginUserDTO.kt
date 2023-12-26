@@ -3,9 +3,7 @@ package dev.pango.apollo.backend.modules.userauth.data.dto.user
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AddUserDTO(
+data class LoginUserDTO(
     val firstName: String,
-    val lastName: String,
-    val email: String,
-    val password: String
+    val password: String,
 )

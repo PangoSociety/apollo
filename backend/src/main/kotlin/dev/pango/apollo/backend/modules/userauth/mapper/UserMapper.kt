@@ -25,4 +25,5 @@ fun User.toUpdateUserDTO() =
         firstName = firstName,
         email = email,
         lastName = lastName,
+        password = password
     )

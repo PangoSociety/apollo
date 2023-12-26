@@ -1,3 +1,7 @@
+
+
+
+
 plugins {
     // TODO: Move ktLint and jvm to Convention
     id("apollo.global.ktlint")
@@ -47,6 +51,7 @@ dependencies {
     implementation(libs.arrow.fxcoroutines)
     // Logging
     implementation(libs.logback.classic)
+    implementation(libs.jbcrypt)
     // I18n
     implementation(libs.i18n4k.jvm)
 }
