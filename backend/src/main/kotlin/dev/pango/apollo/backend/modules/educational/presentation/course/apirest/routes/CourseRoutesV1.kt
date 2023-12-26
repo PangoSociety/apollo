@@ -1,6 +1,5 @@
 package dev.pango.apollo.backend.modules.educational.presentation.course.apirest.routes
 
-import dev.pango.apollo.backend.*
 import dev.pango.apollo.backend.framework.http.*
 import dev.pango.apollo.backend.modules.educational.presentation.course.apirest.config.*
 import dev.pango.apollo.backend.modules.educational.presentation.course.apirest.facade.*
@@ -8,18 +7,25 @@ import dev.pango.apollo.backend.modules.educational.presentation.course.translat
 import dev.pango.apollo.backend.modules.sharedkernel.presentation.apirest.config.*
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.*
 
 fun Route.courseRoutesV1() {
     val courseServiceFacade by inject<CourseServiceFacade>()
     route("/${ApiRestConstants.Resources.COURSES}") {
-        get() {
+        get {
             val locale = call.request.getLocale()
             val courses = courseServiceFacade.listAllCourses()
             val courseListEitherTransformed = courses.mapLeft { it.toTranslatableFailure(locale) }
             call.respondEither(HttpStatusCode.Found, courseListEitherTransformed)
         }
+
+        post {
+            val locale = call.request.getLocale()
+            val courseCreated = courseServiceFacade.createCourse(call.receive())
+            val courseCreatedEitherTransformed = courseCreated.mapLeft { it.toTranslatableFailure(locale) }
+            call.respondEither(HttpStatusCode.Created, courseCreatedEitherTransformed)
+        }
     }
 }
-

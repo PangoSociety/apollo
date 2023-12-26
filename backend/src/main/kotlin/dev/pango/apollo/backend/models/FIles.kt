@@ -3,8 +3,6 @@ package dev.pango.apollo.backend.models
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
-import org.ktorm.entity.*
-import org.ktorm.schema.*
 import java.util.*
 
 @Serializable
@@ -21,18 +19,18 @@ data class FilesResponse(
     val path: String,
 )
 
-interface File : Entity<File> {
-    companion object : Entity.Factory<File>()
-
+// interface File : Entity<File> {
+interface File {
+//    companion object : Entity.Factory<File>()
     var id: UUID?
     var path: String
 }
 
-object Files : Table<File>("files") {
-    val id = uuid("file_id").primaryKey().bindTo(File::id)
-    val path = varchar("path").bindTo(File::path)
-}
-
+// object Files : Table<File>("files") {
+//    val id = uuid("file_id").primaryKey().bindTo(File::id)
+//    val path = varchar("path").bindTo(File::path)
+// }
+//
 object UUIDSerializer : KSerializer<UUID> {
     override val descriptor = PrimitiveSerialDescriptor("UUID", PrimitiveKind.STRING)
 

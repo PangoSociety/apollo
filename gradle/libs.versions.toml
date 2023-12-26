@@ -1,11 +1,12 @@
 [versions]
 arrow = "1.2.0"
-logback = "1.4.11"
+exposed = "0.45.0"
+hikari = "5.1.0"
+logback = "1.4.12"
 koin = "3.5.1"
 kotlin = "1.9.21"
 ktlint = "12.0.3"
 ktor = "2.3.7"
-ktorm = "3.6.0"
 postgresql = "42.3.8"
 faker = "1.15.0"
 i18n4k = "0.7.0"
@@ -13,6 +14,9 @@ i18n4k = "0.7.0"
 [libraries]
 arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrow" }
 arrow-fxcoroutines = { group = "io.arrow-kt", name = "arrow-fx-coroutines", version.ref = "arrow" }
+exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version.ref = "exposed" }
+exposed-dao = { group = "org.jetbrains.exposed", name = "exposed-dao", version.ref = "exposed" }
+exposed-jdbc = { group = "org.jetbrains.exposed", name = "exposed-jdbc", version.ref = "exposed" }
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
 koin-ktor = { group = "io.insert-koin", name = "koin-ktor", version.ref = "koin" }
 koin-logger-slf4j = { group = "io.insert-koin", name = "koin-logger-slf4j", version.ref = "koin" }
@@ -21,16 +25,18 @@ kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit"
 ktlint-gradlePlugin = { group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version.ref = "ktlint" }
 ktor-auth = { group = "io.ktor", name = "ktor-server-auth", version.ref = "ktor" }
 ktor-auth-jwt = { group = "io.ktor", name = "ktor-server-auth-jwt", version.ref = "ktor" }
+ktor-config-yaml = { group = "io.ktor", name = "ktor-server-config-yaml", version.ref = "ktor" }
 ktor-contentnegotiation = { group = "io.ktor", name = "ktor-server-content-negotiation-jvm", version.ref = "ktor" }
 ktor-core = { group = "io.ktor", name = "ktor-server-core-jvm", version.ref = "ktor" }
 ktor-kotlinx-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json-jvm", version.ref = "ktor" }
 ktor-netty = { group = "io.ktor", name = "ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-tests = { group = "io.ktor", name = "ktor-server-tests-jvm", version.ref = "ktor" }
-ktorm-core = { group = "org.ktorm", name = "ktorm-core", version.ref = "ktorm" }
-ktorm-support-postgresql = { group = "org.ktorm", name = "ktorm-support-postgresql", version.ref = "ktorm" }
 postgresql-driver = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 kotlin-faker = { group = "io.github.serpro69", name = "kotlin-faker", version.ref = "faker" }
 i18n4k-jvm = { group = "de.comahe.i18n4k", name = "i18n4k-core-jvm", version.ref = "i18n4k" }
+hikariCP = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
+
+
 
 
 

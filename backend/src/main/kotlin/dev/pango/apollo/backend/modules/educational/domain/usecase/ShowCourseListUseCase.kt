@@ -4,15 +4,15 @@ import arrow.core.*
 import dev.pango.apollo.backend.modules.educational.domain.entity.*
 import dev.pango.apollo.backend.modules.educational.domain.failure.*
 import dev.pango.apollo.backend.modules.educational.domain.repository.*
+import dev.pango.apollo.backend.modules.sharedkernel.domain.repository.*
 
 class ShowCourseListUseCase(
-    private val courseRepository: CourseRepository
+    private val courseRepository: CourseRepository,
 ) {
-
     operator fun invoke(): Either<CourseDomainFailure, List<Course>> {
         return courseRepository.getCourseList().mapLeft {
             when (it) {
-                is RepositoryFailure.DataSourceAccessException -> CourseDomainFailure.DataAccessNotAccessible
+                is RepositoryFailure.DataSourceAccessException -> CourseDomainFailure.CourseListNotAvailable
             }
         }
     }

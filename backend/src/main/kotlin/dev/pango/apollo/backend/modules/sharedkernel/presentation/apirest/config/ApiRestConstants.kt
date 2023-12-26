@@ -3,14 +3,12 @@ package dev.pango.apollo.backend.modules.sharedkernel.presentation.apirest.confi
 class ApiRestConstants {
     class Versions {
         companion object {
-
             const val V1 = "v1"
         }
     }
 
     class Suffix {
         companion object {
-
             const val API = "api"
         }
     }

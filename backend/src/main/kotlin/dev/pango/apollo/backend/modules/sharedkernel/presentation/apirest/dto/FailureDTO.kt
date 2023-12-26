@@ -4,5 +4,5 @@ import kotlinx.serialization.*
 
 @Serializable
 data class FailureDTO(
-    val message: String
+    val message: String,
 )

@@ -1,0 +1,16 @@
+ktor:
+  deployment:
+    port: 8080
+  application:
+    modules:
+      - dev.pango.apollo.backend.ApplicationKt.module
+config:
+  env: DEVELOPMENT # DEVELOPMENT | PRODUCTION | STAGING
+database:
+  user: postgres
+  password: postgres
+  port: 5432
+  name: postgres
+  driver: org.postgresql.Driver
+  host: localhost
+  maxPoolSize: 10
