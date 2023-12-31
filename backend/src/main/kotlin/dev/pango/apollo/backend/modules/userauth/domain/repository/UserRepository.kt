@@ -1,36 +1,32 @@
 package dev.pango.apollo.backend.modules.userauth.domain.repository
 
 import arrow.core.Either
-import dev.pango.apollo.backend.modules.sharedkernel.domain.failure.Failure
-import dev.pango.apollo.backend.modules.userauth.domain.entity.AuthResponse
-import dev.pango.apollo.backend.modules.userauth.domain.entity.RefreshTokenResponse
-import dev.pango.apollo.backend.modules.userauth.domain.entity.User
-import dev.pango.apollo.backend.modules.userauth.domain.entity.User
+import dev.pango.apollo.backend.modules.sharedkernel.domain.repository.*
+import dev.pango.apollo.backend.modules.userauth.domain.entity.*
+import java.util.UUID
 
 interface UserRepository {
-    suspend fun updateUser(
+
+    fun updateUser(
         user: User,
-    ): Either<Failure, User>
+    ): Either<RepositoryFailure, User>
 
-    suspend fun deleteUser(id: Int): Either<Failure, Unit>
+    fun deleteUser(id: UUID): Either<RepositoryFailure, Unit>
 
-    suspend fun createUser(
-        firstname: String,
-        lastname: String,
-        email: String,
-        password: String
-    ): Either<Failure, User>
+    fun createUser(
+        user: User,
+    ): Either<RepositoryFailure, User>
 
-    suspend fun findById(id: Int): Either<Failure, User>
+    fun getUserById(id: UUID): Either<RepositoryFailure, User>
 
-    suspend fun findAll(): Either<Failure, List<User>>
+    fun getUserList(): Either<RepositoryFailure, List<User>>
 
-    suspend fun getUserByCredentials(firstName: String, lastname: String): Either<Failure, User>
 
-    suspend fun authUser(
-        firstName: String,
-        password: String,
-    ): Either<Failure, AuthResponse>
-
-    suspend fun refreshToken(token:String) : Either<Failure, RefreshTokenResponse>
+    //todo change ti email
+    fun getUserByEmail(email: String): Either<RepositoryFailure, User>
+//    fun authUser(
+//        userName: String,
+//        password: String,
+//    ): Either<RepositoryFailure, Tokens>
+    fun refreshToken(token: String): Either<RepositoryFailure, RefreshTokenResponse>
 }

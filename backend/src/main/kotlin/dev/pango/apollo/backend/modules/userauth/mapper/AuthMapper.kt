@@ -1,10 +1,7 @@
 package dev.pango.apollo.backend.modules.userauth.mapper
 
 import dev.pango.apollo.backend.modules.userauth.aplication.config.JwtConfig
-import dev.pango.apollo.backend.modules.userauth.data.dto.user.RefreshTokenDTO
-import dev.pango.apollo.backend.modules.userauth.data.dto.user.UpdateUserDTO
-import dev.pango.apollo.backend.modules.userauth.domain.entity.RefreshTokenResponse
-import dev.pango.apollo.backend.modules.userauth.domain.entity.User
+import dev.pango.apollo.backend.modules.userauth.domain.failure.UserDomainFailure
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -27,13 +24,8 @@ fun Application.configureAuth() {
                 }
             }
             challenge { defaultScheme, realm ->
-                call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
+                call.respond(HttpStatusCode.Unauthorized, UserDomainFailure.TokenNotFoundOrExpiredNotAvailable)
             }
         }
     }
 }
-
-fun RefreshTokenResponse.toRefreshDTO() =
-    RefreshTokenDTO(
-        token = token,
-    )

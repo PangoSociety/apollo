@@ -11,7 +11,7 @@ fun List<HeaderValue>.getDefaultLocale(): Locale =
     try {
         first().toLocale()
     } catch (e: Exception) {
-        getLogger().warn("Failed to get default locale", e)
+        //getLogger().warn("Failed to get default locale", e)
         Locale.ENGLISH
     }
 

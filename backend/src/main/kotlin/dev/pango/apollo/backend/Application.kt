@@ -1,5 +1,6 @@
 package dev.pango.apollo.backend
 
+import dev.pango.apollo.backend.modules.userauth.mapper.configureAuth
 import dev.pango.apollo.backend.plugins.*
 import dev.pango.apollo.backend.routes.*
 import io.ktor.server.application.*
