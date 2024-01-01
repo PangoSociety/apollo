@@ -10,6 +10,7 @@ ktor = "2.3.7"
 postgresql = "42.3.8"
 faker = "1.15.0"
 i18n4k = "0.7.0"
+jbcryptversion = "0.4"
 
 [libraries]
 arrow-core = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrow" }
@@ -35,10 +36,7 @@ postgresql-driver = { group = "org.postgresql", name = "postgresql", version.ref
 kotlin-faker = { group = "io.github.serpro69", name = "kotlin-faker", version.ref = "faker" }
 i18n4k-jvm = { group = "de.comahe.i18n4k", name = "i18n4k-core-jvm", version.ref = "i18n4k" }
 hikariCP = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikari" }
-
-
-
-
+jbcrypt = { group = 'org.mindrot', name = 'jbcrypt', version.ref = "jbcryptversion" }
 
 [plugins]
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }

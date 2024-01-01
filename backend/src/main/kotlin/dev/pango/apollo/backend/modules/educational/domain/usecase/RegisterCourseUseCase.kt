@@ -12,6 +12,7 @@ class RegisterCourseUseCase(
     operator fun invoke(course: Course): Either<CourseDomainFailure, Course> {
         return courseRepository.createCourse(course).mapLeft {
             when (it) {
+//                TODO courselist on createcourse?
                 is RepositoryFailure.DataSourceAccessException -> CourseDomainFailure.CourseListNotAvailable
             }
         }

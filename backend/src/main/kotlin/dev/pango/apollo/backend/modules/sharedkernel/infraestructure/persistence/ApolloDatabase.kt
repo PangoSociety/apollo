@@ -40,7 +40,8 @@ private fun createDataSource(
     val config = HikariConfig()
     config.driverClassName = driverClassName
     config.password = password
-    config.jdbcUrl = "jdbc:postgresql://$host:$port/$dbName"
+    config.jdbcUrl = "jdbc:postgresql://$host:$port/postgres"
+//    config.jdbcUrl = "jdbc:postgresql://$host:$port/$dbName"
     config.maximumPoolSize = maxPoolSize
     config.username = user
     config.validate()

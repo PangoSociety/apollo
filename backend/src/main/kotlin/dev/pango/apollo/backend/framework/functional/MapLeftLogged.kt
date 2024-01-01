@@ -6,7 +6,7 @@ import io.ktor.util.logging.*
 
 fun <Right, Left> Either<Throwable, Right>.mapLeftLogged(function: (Throwable) -> Left): Either<Left, Right> {
     return mapLeft { throwable ->
-        getLogger().error(throwable)
+//        getLogger().error(throwable)
         function(throwable)
     }
 }
