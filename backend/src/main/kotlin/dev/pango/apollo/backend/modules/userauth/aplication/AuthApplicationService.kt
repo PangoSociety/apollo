@@ -2,7 +2,6 @@ package dev.pango.apollo.backend.modules.userauth.aplication
 
 import arrow.core.Either
 import dev.pango.apollo.backend.modules.userauth.domain.entity.AuthToken
-import dev.pango.apollo.backend.modules.userauth.domain.entity.RefreshToken
 import dev.pango.apollo.backend.modules.userauth.domain.entity.Tokens
 import dev.pango.apollo.backend.modules.userauth.domain.failure.UserDomainFailure
 import dev.pango.apollo.backend.modules.userauth.domain.usecase.LoginUserUseCase
@@ -13,15 +12,16 @@ import dev.pango.apollo.backend.modules.userauth.domain.usecase.UpdateAccessToke
 class AuthApplicationService(
     private val loginUserUseCase: LoginUserUseCase,
     private val saveRefreshTokenUseCase: SaveRefreshTokenUseCase,
-    private val updateAccessTokenByRefreshTokenUseCase: UpdateAccessTokenByRefreshTokenUseCase
-
-    ) {
-
-    fun loginUser(email: String, password: String): Either<UserDomainFailure, Tokens> {
+    private val updateAccessTokenByRefreshTokenUseCase: UpdateAccessTokenByRefreshTokenUseCase,
+) {
+    fun loginUser(
+        email: String,
+        password: String,
+    ): Either<UserDomainFailure, Tokens> {
         return loginUserUseCase(email, password)
     }
 
-    fun accessUser(refreshToken: String) : Either<UserDomainFailure, AuthToken> {
+    fun accessUser(refreshToken: String): Either<UserDomainFailure, AuthToken> {
         return updateAccessTokenByRefreshTokenUseCase(refreshToken)
     }
 
@@ -29,4 +29,3 @@ class AuthApplicationService(
 //        return saveRefreshTokenUseCase(refreshToken, username)
 //    }
 }
-

@@ -9,5 +9,3 @@ fun generateRandomSecret(length: Int): String {
     random.nextBytes(bytes)
     return Base64.getEncoder().encodeToString(bytes)
 }
-
-

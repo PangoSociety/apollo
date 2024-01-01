@@ -3,7 +3,6 @@ package dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.faca
 import arrow.core.Either
 import dev.pango.apollo.backend.modules.userauth.aplication.AuthApplicationService
 import dev.pango.apollo.backend.modules.userauth.aplication.UserApplicationService
-import dev.pango.apollo.backend.modules.userauth.domain.entity.AuthToken
 import dev.pango.apollo.backend.modules.userauth.domain.entity.User
 import dev.pango.apollo.backend.modules.userauth.domain.failure.UserDomainFailure
 import dev.pango.apollo.backend.modules.userauth.mapper.toAuthTokenDTO
@@ -11,9 +10,9 @@ import dev.pango.apollo.backend.modules.userauth.mapper.toUser
 import dev.pango.apollo.backend.modules.userauth.mapper.toUserDTO
 import dev.pango.apollo.backend.modules.userauth.mapper.toUserListDTO
 import dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.dto.AuthTokenDTO
-import dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.dto.TokensDTO
 import dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.dto.LoginUserDTO
 import dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.dto.RegisterUserDTO
+import dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.dto.TokensDTO
 import dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.dto.UserDTO
 import java.util.UUID
 
@@ -21,7 +20,6 @@ class UserServiceFacade(
     private val userService: UserApplicationService,
     private val authService: AuthApplicationService,
 ) {
-
     fun listAllUsers(): Either<UserDomainFailure, List<UserDTO>> {
         return userService.listAllUsers().map {
             it.toUserListDTO()
@@ -62,7 +60,4 @@ class UserServiceFacade(
             it.toAuthTokenDTO()
         }
     }
-
-
-
 }

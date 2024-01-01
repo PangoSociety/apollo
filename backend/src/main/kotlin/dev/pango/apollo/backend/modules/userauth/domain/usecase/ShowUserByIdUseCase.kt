@@ -7,15 +7,15 @@ import dev.pango.apollo.backend.modules.userauth.domain.failure.*
 import dev.pango.apollo.backend.modules.userauth.domain.repository.*
 import java.util.UUID
 
-class ShowUserByIdUseCase (
-    private val userRepository: UserRepository
-    ) {
-        operator fun invoke(id: UUID): Either<UserDomainFailure, User> {
-            return userRepository.getUserById(id).mapLeft {
-                when(it) {
+class ShowUserByIdUseCase(
+    private val userRepository: UserRepository,
+) {
+    operator fun invoke(id: UUID): Either<UserDomainFailure, User> {
+        return userRepository.getUserById(id).mapLeft {
+            when (it) {
 //                    TODO 1
-                    is RepositoryFailure.DataSourceAccessException -> UserDomainFailure.UserByIdNotAvailable
-                }
+                is RepositoryFailure.DataSourceAccessException -> UserDomainFailure.UserByIdNotAvailable
             }
         }
     }
+}

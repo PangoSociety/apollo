@@ -2,8 +2,6 @@ package dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.rout
 
 import dev.pango.apollo.backend.framework.http.getLocale
 import dev.pango.apollo.backend.framework.http.respondEither
-import dev.pango.apollo.backend.modules.educational.presentation.course.apirest.config.COURSES
-import dev.pango.apollo.backend.modules.educational.presentation.course.apirest.facade.CourseServiceFacade
 import dev.pango.apollo.backend.modules.educational.presentation.course.translation.toTranslatableFailure
 import dev.pango.apollo.backend.modules.sharedkernel.presentation.apirest.config.ApiRestConstants
 import dev.pango.apollo.backend.modules.userauth.domain.entity.User
@@ -31,9 +29,10 @@ fun Route.userRoutesV1() {
             get {
                 val locale = call.request.getLocale()
                 val users = userServiceFacade.listAllUsers()
-                val userListEitherTransformed = users.mapLeft {
-                    it.toTranslatableFailure(locale)
-                }
+                val userListEitherTransformed =
+                    users.mapLeft {
+                        it.toTranslatableFailure(locale)
+                    }
                 call.respondEither(HttpStatusCode.Found, userListEitherTransformed)
             }
 
@@ -42,9 +41,10 @@ fun Route.userRoutesV1() {
                 val idUUID: UUID = UUID.fromString(idString)
                 val locale = call.request.getLocale()
                 val user = userServiceFacade.listUserById(idUUID)
-                val userByIdEitherTransformed = user.mapLeft {
-                    it.toTranslatableFailure(locale)
-                }
+                val userByIdEitherTransformed =
+                    user.mapLeft {
+                        it.toTranslatableFailure(locale)
+                    }
                 call.respondEither(HttpStatusCode.Found, userByIdEitherTransformed)
             }
             post {
@@ -60,9 +60,10 @@ fun Route.userRoutesV1() {
                 val idUUID: UUID = UUID.fromString(idString)
                 val locale = call.request.getLocale()
                 val userDelete = userServiceFacade.deleteUser(idUUID)
-                val userDeleteEitherTransformed = userDelete.mapLeft {
-                    it.toTranslatableFailure(locale)
-                }
+                val userDeleteEitherTransformed =
+                    userDelete.mapLeft {
+                        it.toTranslatableFailure(locale)
+                    }
                 call.respondEither(HttpStatusCode.NoContent, userDeleteEitherTransformed)
             }
 
@@ -71,19 +72,21 @@ fun Route.userRoutesV1() {
                 val idUUID: UUID = UUID.fromString(idString)
                 val entity = call.receive<UpdateUserDTO>()
                 val locale = call.request.getLocale()
-                val userUpdate = userServiceFacade.updateUser(
-                    User(
-                        id = idUUID,
-                        entity.username,
-                        entity.firstname,
-                        entity.lastname,
-                        entity.email,
-                        entity.password
+                val userUpdate =
+                    userServiceFacade.updateUser(
+                        User(
+                            id = idUUID,
+                            entity.username,
+                            entity.firstname,
+                            entity.lastname,
+                            entity.email,
+                            entity.password,
+                        ),
                     )
-                )
-                val userUpdateEitherTransformed = userUpdate.mapLeft {
-                    it.toTranslatableFailure(locale)
-                }
+                val userUpdateEitherTransformed =
+                    userUpdate.mapLeft {
+                        it.toTranslatableFailure(locale)
+                    }
                 call.respondEither(HttpStatusCode.OK, userUpdateEitherTransformed)
             }
         }

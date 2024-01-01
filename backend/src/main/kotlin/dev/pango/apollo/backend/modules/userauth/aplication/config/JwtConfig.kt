@@ -8,15 +8,14 @@ import java.util.Date
 import java.util.concurrent.TimeUnit
 
 object JwtConfig {
-
-    var SECRET = generateRandomSecret(32)
+    var secret = generateRandomSecret(32)
     const val EXPIRATION_DAY = 30 // 1 día
     const val MY_REALM = "DOMINIO...'"
     val expirationDate =
         Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(EXPIRATION_DAY.toLong()))
     val verifier: JWTVerifier =
         JWT
-            .require(Algorithm.HMAC256(SECRET))
+            .require(Algorithm.HMAC256(secret))
 //            .withAudience(AUDIENCE)
 //            .withIssuer(ISSUER)
             .build()

@@ -11,9 +11,8 @@ class UserApplicationService(
     private val showUserByIdUseCase: ShowUserByIdUseCase,
     private val registerUserUseCase: RegisterUserUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
-    private val updateUserUseCase: UpdateUserUseCase
+    private val updateUserUseCase: UpdateUserUseCase,
 ) {
-
     fun listAllUsers(): Either<UserDomainFailure, List<User>> {
         return showUserListUseCase()
     }
@@ -30,8 +29,7 @@ class UserApplicationService(
         return deleteUserUseCase(id)
     }
 
-    fun updateUser(user: User) : Either<UserDomainFailure, User> {
+    fun updateUser(user: User): Either<UserDomainFailure, User> {
         return updateUserUseCase(user)
     }
 }
-

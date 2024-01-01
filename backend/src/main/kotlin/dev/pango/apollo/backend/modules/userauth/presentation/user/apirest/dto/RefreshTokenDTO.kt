@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RefreshTokenDTO(
     @SerialName("refreshToken")
-    val token : String
+    val token: String,
 )

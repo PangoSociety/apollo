@@ -6,10 +6,11 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import dev.pango.apollo.backend.modules.userauth.aplication.config.*
 import java.util.Date
 
-class JwtService (
-
-) {
-    private fun generateToken(email: String, expireIn: Int): String {
+class JwtService() {
+    private fun generateToken(
+        email: String,
+        expireIn: Int,
+    ): String {
         return JWT.create()
 //            TODO add methodes for JWT
 //            .withAudience(AUDIxENCE)

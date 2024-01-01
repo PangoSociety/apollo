@@ -1,7 +1,7 @@
 package dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.dto
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.*
+import kotlinx.serialization.SerialName
 
 @Serializable
 data class RegisterUserDTO(

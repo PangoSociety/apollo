@@ -1,13 +1,12 @@
 package dev.pango.apollo.backend.modules.userauth.presentation.user.translation
 
 import AuthUser
-import Educational
 import dev.pango.apollo.backend.modules.sharedkernel.infraestructure.intl.*
 import dev.pango.apollo.backend.modules.userauth.domain.failure.*
 import java.util.Locale
 
-fun UserDomainFailure.toTranslatableFailure( locale: Locale): TranslatableFailure =
-    when(this) {
+fun UserDomainFailure.toTranslatableFailure(locale: Locale): TranslatableFailure =
+    when (this) {
         UserDomainFailure.UserListNotAvailable -> TranslatableFailure(AuthUser.failureUserListNotAvailable(locale))
         UserDomainFailure.UserByIdNotAvailable -> TranslatableFailure(AuthUser.failureUserByIdNotAvailable(locale))
         UserDomainFailure.UserRegisterNotAvailable -> TranslatableFailure(AuthUser.failureUserRegisterNotAvailable(locale))
@@ -21,6 +20,5 @@ fun UserDomainFailure.toTranslatableFailure( locale: Locale): TranslatableFailur
         UserDomainFailure.UserFoundByEmailNotAvailable -> TranslatableFailure(AuthUser.failureFoundUserByEmailNotAvailable(locale))
         UserDomainFailure.DecodedRefreshTokenNotAvailable -> TranslatableFailure(AuthUser.failureDecodedRefreshTokenNotAvailable(locale))
         UserDomainFailure.EmailDecodedFoundNotAvailable -> TranslatableFailure(AuthUser.failureEmailDecodedFoundTokenNotAvailable(locale))
-        UserDomainFailure.TokenNotFoundOrExpiredNotAvailable-> TranslatableFailure(AuthUser.failureTokenFoundOrExpired(locale))
-
+        UserDomainFailure.TokenNotFoundOrExpiredNotAvailable -> TranslatableFailure(AuthUser.failureTokenFoundOrExpired(locale))
     }

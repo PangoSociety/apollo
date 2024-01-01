@@ -20,9 +20,7 @@ import java.util.*
  *
  *
  */
-class UserRepositoryExposed(
-) : UserRepository {
-
+class UserRepositoryExposed() : UserRepository {
     override fun getUserById(id: UUID): Either<RepositoryFailure, User> =
         Either.catch {
             transaction {
@@ -93,27 +91,28 @@ class UserRepositoryExposed(
         user: User,
     ): Either<RepositoryFailure, User> =
         Either.catch {
-            val updateUser = transaction {
-                //TODO refactor el nonnull
-                val userEntity = UserTableEntity.findById(EntityID(user.id, UserTable))!!
-                userEntity.username = user.userName
-                userEntity.firstname = user.firstName
-                userEntity.lastname = user.lastName
-                userEntity.email = user.email
-                userEntity.password = hashPassword(user.password)
+            val updateUser =
+                transaction {
+                    // TODO refactor el nonnull
+                    val userEntity = UserTableEntity.findById(EntityID(user.id, UserTable))!!
+                    userEntity.username = user.userName
+                    userEntity.firstname = user.firstName
+                    userEntity.lastname = user.lastName
+                    userEntity.email = user.email
+                    userEntity.password = hashPassword(user.password)
 
-                userEntity
-            }
+                    userEntity
+                }
             updateUser.toUser()
         }.mapLeftLogged {
             RepositoryFailure.DataSourceAccessException(it)
         }
 
     override fun deleteUser(id: UUID): Either<RepositoryFailure, Unit> {
-        //TODO implement successful delete response
+        // TODO implement successful delete response
         return Either.catch {
             transaction {
-                //TODO cambiar UserTable por UserTableEntity
+                // TODO cambiar UserTable por UserTableEntity
                 UserTable.deleteWhere { UserTable.id eq id }
             }
         }.mapLeftLogged {
@@ -143,7 +142,10 @@ class UserRepositoryExposed(
     private fun hashPassword(password: String) =
         BCrypt.hashpw(password, BCrypt.gensalt())
 
-    private fun checkPassword(plainPassword: String, hashedPassword: String): Boolean {
+    private fun checkPassword(
+        plainPassword: String,
+        hashedPassword: String,
+    ): Boolean {
         return BCrypt.checkpw(plainPassword, hashedPassword)
     }
 }

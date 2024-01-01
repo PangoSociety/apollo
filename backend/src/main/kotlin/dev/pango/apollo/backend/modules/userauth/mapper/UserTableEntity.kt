@@ -10,9 +10,9 @@ fun UserTableEntity.toUser() =
         firstName = firstname,
         lastName = lastname,
         email = email,
-        password = password
+        password = password,
     )
-//fun User.toDetailUserDTO() =
+// fun User.toDetailUserDTO() =
 //    DetailUserDTO(
 //        id = id,
 //        firstName = firstName,
@@ -20,7 +20,7 @@ fun UserTableEntity.toUser() =
 //        lastName = lastName,
 //    )
 //
-//fun User.toUpdateUserDTO() =
+// fun User.toUpdateUserDTO() =
 //    UpdateUserDTO(
 //        firstName = firstName,
 //        email = email,

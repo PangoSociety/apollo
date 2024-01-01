@@ -1,15 +1,13 @@
 package dev.pango.apollo.backend.modules.userauth.di
 
 import dev.pango.apollo.backend.framework.crypto.CryptoService
-import dev.pango.apollo.backend.modules.userauth.aplication.AuthApplicationService
 import dev.pango.apollo.backend.framework.jwt.JwtService
+import dev.pango.apollo.backend.modules.userauth.aplication.AuthApplicationService
 import dev.pango.apollo.backend.modules.userauth.aplication.UserApplicationService
-import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.UserRepositoryExposed
-//import dev.pango.apollo.backend.modules.userauth.data.repository.RefreshTokenMap
-import dev.pango.apollo.backend.modules.userauth.domain.repository.AuthRepository
-import dev.pango.apollo.backend.modules.userauth.domain.repository.UserRepository
+import dev.pango.apollo.backend.modules.userauth.domain.repository.*
 import dev.pango.apollo.backend.modules.userauth.domain.usecase.*
 import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.AuthRepositoryExposed
+import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.UserRepositoryExposed
 import dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.facade.UserServiceFacade
 import org.koin.dsl.module
 
@@ -26,7 +24,6 @@ val userAuthModule =
         single<AuthRepository> {
             AuthRepositoryExposed()
         }
-
 
         single<AuthApplicationService> { AuthApplicationService(get(), get(), get()) }
         single<JwtService> { JwtService() }
@@ -56,5 +53,5 @@ val userAuthModule =
 
         single<SaveRefreshTokenUseCase> { SaveRefreshTokenUseCase(get()) }
 
-        single<UpdateAccessTokenByRefreshTokenUseCase> { UpdateAccessTokenByRefreshTokenUseCase(get(), get(), get())}
+        single<UpdateAccessTokenByRefreshTokenUseCase> { UpdateAccessTokenByRefreshTokenUseCase(get(), get(), get()) }
     }

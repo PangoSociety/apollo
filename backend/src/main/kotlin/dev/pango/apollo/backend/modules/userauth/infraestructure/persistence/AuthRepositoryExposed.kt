@@ -5,17 +5,11 @@ import dev.pango.apollo.backend.framework.functional.mapLeftLogged
 import dev.pango.apollo.backend.modules.sharedkernel.domain.repository.RepositoryFailure
 import dev.pango.apollo.backend.modules.userauth.domain.entity.RefreshToken
 import dev.pango.apollo.backend.modules.userauth.domain.repository.AuthRepository
-import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.entity.RefreshTokenTable
 import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.entity.RefreshTokenTableEntity
-import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.entity.UserTable
-import dev.pango.apollo.backend.modules.userauth.infraestructure.persistence.entity.UserTableEntity
 import dev.pango.apollo.backend.modules.userauth.mapper.toRefreshToken
-import dev.pango.apollo.backend.modules.userauth.mapper.toUser
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class AuthRepositoryExposed() : AuthRepository {
-
     override fun findEmailByToken(token: String): Either<RepositoryFailure, String> =
         Either.catch {
             transaction {

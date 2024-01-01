@@ -6,7 +6,6 @@ import dev.pango.apollo.backend.modules.userauth.domain.entity.*
 import java.util.UUID
 
 interface UserRepository {
-
     fun updateUser(
         user: User,
     ): Either<RepositoryFailure, User>
@@ -21,9 +20,9 @@ interface UserRepository {
 
     fun getUserList(): Either<RepositoryFailure, List<User>>
 
-
-    //todo change ti email
+    // todo change ti email
     fun getUserByEmail(email: String): Either<RepositoryFailure, User>
+
 //    fun authUser(
 //        userName: String,
 //        password: String,

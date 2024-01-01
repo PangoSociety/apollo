@@ -4,15 +4,14 @@ import dev.pango.apollo.backend.framework.http.getLocale
 import dev.pango.apollo.backend.framework.http.respondEither
 import dev.pango.apollo.backend.modules.sharedkernel.presentation.apirest.config.ApiRestConstants
 import dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.config.AUTH
-import dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.dto.AuthTokenDTO
 import dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.dto.RefreshTokenDTO
 import dev.pango.apollo.backend.modules.userauth.presentation.user.apirest.facade.UserServiceFacade
 import dev.pango.apollo.backend.modules.userauth.presentation.user.translation.toTranslatableFailure
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
-import io.ktor.server.routing.Route
 import io.ktor.server.routing.*
+import io.ktor.server.routing.Route
 import org.koin.ktor.ext.inject
 
 fun Route.userAuthRoute() {

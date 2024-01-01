@@ -6,12 +6,12 @@ import dev.pango.apollo.backend.modules.userauth.domain.entity.*
 import dev.pango.apollo.backend.modules.userauth.domain.failure.*
 import dev.pango.apollo.backend.modules.userauth.domain.repository.*
 
-class ShowUserListUseCase (
-    private val userRepository: UserRepository
+class ShowUserListUseCase(
+    private val userRepository: UserRepository,
 ) {
     operator fun invoke(): Either<UserDomainFailure, List<User>> {
         return userRepository.getUserList().mapLeft {
-            when(it) {
+            when (it) {
                 is RepositoryFailure.DataSourceAccessException -> UserDomainFailure.UserListNotAvailable
             }
         }
