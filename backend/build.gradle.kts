@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.exposed.dao)
     implementation(libs.hikariCP)
     implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.date)
     implementation(libs.postgresql.driver)
     // Tests
     testImplementation(libs.ktor.tests)
