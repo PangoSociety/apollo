@@ -12,10 +12,21 @@ val educationalModule =
         // Repositories
         single<CourseRepository> { CourseRepositoryExposed() }
         // Application Services
-        single<CourseApplicationService> { CourseApplicationService(get(), get()) }
+        single<CourseApplicationService> {
+            CourseApplicationService(
+                get(),
+                get(),
+                get(),
+                get(),
+                get(),
+            )
+        }
         // Facades
         single { CourseServiceFacade(get()) }
         // Use cases
         single<ShowCourseListUseCase> { ShowCourseListUseCase(get()) }
+        single<ShowCourseByIdUseCase> { ShowCourseByIdUseCase(get()) }
         single<RegisterCourseUseCase> { RegisterCourseUseCase(get()) }
+        single<DeleteCourseUseCase> { DeleteCourseUseCase(get()) }
+        single<UpdateCourseUseCase> { UpdateCourseUseCase(get()) }
     }

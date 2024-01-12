@@ -4,5 +4,5 @@ import java.util.*
 
 data class Course(
     val id: UUID = UUID.randomUUID(),
-    val name: String,
+    var name: String,
 )

@@ -17,6 +17,7 @@ arrow-fxcoroutines = { group = "io.arrow-kt", name = "arrow-fx-coroutines", vers
 exposed-core = { group = "org.jetbrains.exposed", name = "exposed-core", version.ref = "exposed" }
 exposed-dao = { group = "org.jetbrains.exposed", name = "exposed-dao", version.ref = "exposed" }
 exposed-jdbc = { group = "org.jetbrains.exposed", name = "exposed-jdbc", version.ref = "exposed" }
+exposed-date = { group = "org.jetbrains.exposed", name = "exposed-java-time", version.ref = "exposed" }
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
 koin-ktor = { group = "io.insert-koin", name = "koin-ktor", version.ref = "koin" }
 koin-logger-slf4j = { group = "io.insert-koin", name = "koin-logger-slf4j", version.ref = "koin" }
